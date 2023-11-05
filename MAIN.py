@@ -50,33 +50,31 @@ def onAppStart(app):
     app.pat2Pic = CMUImage(app.pat2Pic)
     app.pat2Flipped = CMUImage(app.pat2Flipped)
     app.patPunch = Image.open("patPunch7.png")
-    app.patPunch = CMUImage(app.patPunch7)
     app.patPunchFlipped = app.patPunch.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    app.patPunch = CMUImage(app.patPunch)
     app.patPunchFlipped = CMUImage(app.patPunchFlipped)
     app.patJump = Image.open("patJump.png")
-    app.patJump = CMUImage(app.patJump)
     app.patJumpFlipped = app.patJump.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    app.patJump = CMUImage(app.patJump)
     app.patJumpFlipped = CMUImage(app.patJumpFlipped)
     app.isPatReversed = False
     
     # Loading Mike Photos
     app.mike1Pic = Image.open("mike1.png")
-    app.mike1Pic = CMUImage(app.mike1Pic)
     app.mike1Flipped = app.mike1Pic.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    app.mike1Pic = CMUImage(app.mike1Pic)
     app.mike1Flipped = CMUImage(app.mike1Flipped)
     app.mike2Pic = Image.open("mike4.png")
     app.mike2Flipped = app.mike2Pic.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
     app.mike2Pic = CMUImage(app.mike2Pic)
     app.mike2Flipped = CMUImage(app.mike2Flipped)
-    app.mikeList = [app.mike1, app.mike2]
-    app.mikeListFlipped = [app.mike1Flipped, app.mike2Flipped]
     app.mikePunch = Image.open("mikePunch9.png")
-    app.mikePunch = CMUImage(app.mikePunch)
     app.mikePunchFlipped = app.mikePunch.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    app.mikePunch = CMUImage(app.mikePunch)
     app.mikePunchFlipped = CMUImage(app.mikePunchFlipped)
     app.mikeJump = Image.open("mikeJump.png")
-    app.mikeJump = CMUImage(app.mikeJump)
     app.mikeJumpFlipped = app.mikeJump.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+    app.mikeJump = CMUImage(app.mikeJump)
     app.mikeJumpFlipped = CMUImage(app.mikeJumpFlipped)
     app.isMikeReversed = False
     
@@ -85,7 +83,8 @@ def onAppStart(app):
     app.runIndxBlue = 1
     app.runAnimationBlue = False
 
-    app.restingBlue = {1: app., 2: 'restingImage2', 3: 'restingImage3', 4: 'restingImage4'}
+    app.restingBlue = {1: app.pat1Pic, 2: app.pat2Pic, 3: app.pat1Pic, 4: app.pat2Pic}
+    app.restingBlueReversed = {1: app.pat1Flipped, 2: app.pat2Flipped, 3: app.pat1Flipped, 4: app.pat2Flipped}
     app.restIndxBlue = 1
     app.restAnimationBlue = True
     app.stepsAnimation = 0
@@ -95,7 +94,8 @@ def onAppStart(app):
     app.runIndxRed = 1
     app.runAnimationRed = False
 
-    app.restingRed = {1: 'restingImage1', 2: 'restingImage2', 3: 'restingImage3', 4: 'restingImage4'}
+    app.restingRed = {1: app.mike1Pic, 2: app.mike2Pic, 3: app.mike1Pic, 4: app.mike2Pic}
+    app.restingRedFlipped = {1: app.mike1Flipped, 2: app.mike2Flipped, 3: app.mike1Flipped, 4: app.mike2Flipped}
     app.restIndxRed = 1
     app.restAnimationRed = True
 
@@ -279,37 +279,48 @@ def redrawAll(app):
     ### Mike
     if app.redKick == False and app.jumpRed == False and app.runAnimationRed == False and app.restAnimationRed == True: 
         #draw the image of mike standing
+        if not app.isMikeReversed:
+            drawImage(app.mike1Pic, app.redX, app.redY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
+        elif app.isMikeReversed:
+            drawImage(app.mike1Flipped, app.redX, app.redY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
     elif app.redKick == True and app.jumpRed == False and app.runAnimationRed == False and app.restAnimationRed == False: 
         #drawimage of mike kicking
+        drawImage(app.mikePunch, app.redX, app.redY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
     elif app.redKick == False and app.jumpRed == True and app.runAnimationRed == False and app.restAnimationRed == False: 
         #drawimage of mike jumping
+        drawImage(app.mikeJump, app.redX, app.redY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
     elif app.redKick == False and app.jumpRed == False and app.runAnimationRed == True and app.restAnimationRed == False: 
         #drawimage of mike running
+        pass
         
 
     ###Pat
 
     if app.blueKick == False and app.jumpBlue == False and app.runAnimationBlue == False and app.restAnimationBlue == True: 
         #draw the image of pat standing
-        if not isPatReversed:
-            drawImage(app.pat1Pic, app.blueX, app.blueY, alig = 'center',
-                  app.spriteWidth, app.spriteHeight)
-        elif isPatReversed:
-            drawImage(app.pat1Flipped, app.blueX, app.blueY, alig = 'center',
-                  app.spriteWidth, app.spriteHeight)
+        if not app.isPatReversed:
+            drawImage(app.restingBlue[app.restIndxBlue], app.blueX, app.blueY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
+        elif app.isPatReversed:
+            drawImage(app.pat1Flipped, app.blueX, app.blueY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
         #need to animate to rotate between 1 and 2
         
     elif app.blueKick == True and app.jumpBlue == False and app.runAnimationBlue == False and app.restAnimationBlue == False: 
         #drawimage of pat kicking
-        drawImage(app.patPunch, app.blueX, app.blueY, alig = 'center',
-                  app.spriteWidth, app.spriteHeight)
+        drawImage(app.patPunch, app.blueX, app.blueY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
     elif app.blueKick == False and app.jumpBlue == True and app.runAnimationBlue == False and app.restAnimationBlue == False:
         #drawimage of pat jumping
-        drawImage(app.patJump, app.blueX, app.blueY, alig = 'center',
-                  app.spriteWidth, app.spriteHeight)
+        drawImage(app.patJump, app.blueX, app.blueY, align = 'center',
+                  width = app.spriteWidth, height = app.spriteHeight)
     elif app.blueKick == False and app.jumpBlue == False and app.runAnimationBlue == True and app.restAnimationBlue == False:
         #drawimage of pat running
- 
+        pass
  
 
 
