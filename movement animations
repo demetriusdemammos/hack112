@@ -1,0 +1,85 @@
+from cmu_graphics import *
+
+def onAppStart(app):
+    ###Animations
+    app.runningBlue = {1: 'runningImage1', 2: 'runningImage2', 3: 'runningImage3', 4: 'runningImage4'}
+    app.runIndxBlue = 1
+    app.runAnimationBlue = False
+
+    app.restingBlue = {1: 'restingImage1', 2: 'restingImage2', 3: 'restingImage3', 4: 'restingImage4'}
+    app.restIndxBlue = 1
+    app.restAnimationBlue = True
+    app.stepsAnimation = 0
+
+    app.runningRed = {1: 'runningImage1', 2: 'runningImage2', 3: 'runningImage3', 4: 'runningImage4'}
+    app.runIndxRed = 1
+    app.runAnimationRed = False
+
+    app.restingRed = {1: 'restingImage1', 2: 'restingImage2', 3: 'restingImage3', 4: 'restingImage4'}
+    app.restIndxRed = 1
+    app.restAnimationRed = True
+
+
+def onKeyHold(app, keys):
+    ###Animation
+    if 'a' in keys or 'd' in keys:
+        app.runAnimationBlue = True
+        app.restAnimationBlue = False
+    
+    if 'left' in keys or 'right' in keys:
+        app.runAnimationRed = True
+        app.restAnimationRed = False
+    
+
+    
+
+def onKeyRelease(app, keys):
+    ###Animations
+    if 'a' in keys or 'd' in keys:
+        app.runAnimationBlue = False
+        app.restAnimationBlue = True
+
+    if 'left' in keys or 'right' in keys:
+        app.runAnimationRed = False
+        app.restAnimationRed = True
+    
+def onStep(app):
+    ###Animations
+    app.stepsAnimation += 1
+    if app.stepsAnimation % 7 == 0:
+        if app.runAnimationBlue == True:
+            if app.runIndxBlue < 5:
+                app.runIndxBlue += 1
+            if app.runIndxBlue >= 5:
+                app.runIndxBlue = 1
+            print(app.runningBlue[app.runIndxBlue])
+        
+        if app.restAnimationBlue == True:
+            if app.restIndxBlue < 5:
+                app.restIndxBlue += 1
+            if app.restIndxBlue >= 5:
+                app.restIndxBlue = 1
+            print(app.restingBlue[app.restIndxBlue])
+
+    if app.stepsAnimation % 7 == 0:
+        if app.runAnimationRed == True:
+            if app.runIndxRed < 5:
+                app.runIndxRed += 1
+            if app.runIndxRed >= 5:
+                app.runIndxRed = 1
+            print(app.runningRed[app.runIndxRed])
+        
+        if app.restAnimationRed == True:
+            if app.restIndxRed < 5:
+                app.restIndxRed += 1
+            if app.restIndxRed >= 5:
+                app.restIndxRed = 1
+            print(app.restingRed[app.restIndxRed])
+
+    
+
+
+def main():
+    runApp()
+
+main()
